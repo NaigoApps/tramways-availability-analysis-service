@@ -1,90 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>availability-analysis-service</artifactId>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <groupId>org.springframework.boot</groupId>
-      </plugin>
-    </plugins>
-  </build>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>availability-analysis-service</artifactId>
 
-  <dependencies>
-    <dependency>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-      <groupId>org.springframework.cloud</groupId>
-    </dependency>
+    <repositories>
+        <repository>
+            <id>oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
-    <dependency>
-      <artifactId>tramways-commons-analysis-model</artifactId>
-      <groupId>it.tramways</groupId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-    <dependency>
-      <artifactId>projects-service-client-api</artifactId>
-      <groupId>it.tramways</groupId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-kafka</artifactId>
-      <groupId>org.springframework.kafka</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>analysis-service-commons-kafka</artifactId>
-      <groupId>it.tramways</groupId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <artifactId>sirio</artifactId>
-      <groupId>org.oris-tool</groupId>
-      <version>2.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>it.tramways</groupId>
-      <artifactId>tramways-commons-core</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
-  <dependencyManagement>
     <dependencies>
-      <dependency>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <groupId>org.springframework.cloud</groupId>
-        <scope>import</scope>
-        <type>pom</type>
-        <version>${spring-cloud.version}</version>
-      </dependency>
+        <dependency>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+        </dependency>
+
+        <dependency>
+            <artifactId>analysis-service-client-api</artifactId>
+            <groupId>it.tramways</groupId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>it.tramways</groupId>
+            <artifactId>analysis-service-commons-kafka</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>it.tramways</groupId>
+            <artifactId>analysis-service-commons-core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <artifactId>projects-service-client-api</artifactId>
+            <groupId>it.tramways</groupId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <artifactId>spring-kafka</artifactId>
+            <groupId>org.springframework.kafka</groupId>
+        </dependency>
+
+        <dependency>
+            <artifactId>sirio</artifactId>
+            <groupId>org.oris-tool</groupId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>it.tramways</groupId>
+            <artifactId>tramways-commons-core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
-  </dependencyManagement>
-  <groupId>it.tramways</groupId>
-  <modelVersion>4.0.0</modelVersion>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <groupId>org.springframework.cloud</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <groupId>it.tramways</groupId>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <groupId>org.springframework.boot</groupId>
-    <relativePath/>
-    <version>2.3.4.RELEASE</version>
-  </parent>
-  <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
-  </properties>
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <relativePath/>
+        <version>2.3.4.RELEASE</version>
+    </parent>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
+    </properties>
 
-  <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
 </project>

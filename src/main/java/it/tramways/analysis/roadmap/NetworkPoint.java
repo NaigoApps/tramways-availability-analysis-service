@@ -1,6 +1,7 @@
 package it.tramways.analysis.roadmap;
 
 import it.tramways.analysis.AbstractConfigurable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,12 +33,26 @@ public class NetworkPoint extends AbstractConfigurable implements Node<LaneSegme
         return links.get(segment);
     }
 
-    public void startLane(LaneSegment target) {
+    public LaneSegment startLane(LaneSegment target) {
         LaneSegmentLink link = new LaneSegmentLink();
         link.setSource(VOID);
         link.setDestination(target);
         target.setSource(this);
         links.computeIfAbsent(VOID, l -> new HashSet<>()).add(link);
+        return target;
+    }
+
+    public LaneSegment createLink(LaneSegment from, LaneSegment to) {
+        LaneSegmentLink link = new LaneSegmentLink();
+        link.setSource(from);
+        link.setDestination(to);
+
+        from.setDestination(this);
+        to.setSource(this);
+
+        links.computeIfAbsent(from, l -> new HashSet<>()).add(link);
+
+        return to;
     }
 
     public void endLane(LaneSegment target) {

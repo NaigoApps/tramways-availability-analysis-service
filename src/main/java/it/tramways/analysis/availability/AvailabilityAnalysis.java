@@ -1,14 +1,8 @@
 package it.tramways.analysis.availability;
 
-import static it.tramways.analysis.availability.AvailabilityAnalysisProperties.PERIOD;
-
-import it.tramways.commons.analysis.model.XYAnalysisResult;
-import it.tramways.commons.analysis.model.XYPoint;
+import it.tramways.analysis.api.v1.model.XYAnalysisResult;
+import it.tramways.analysis.api.v1.model.XYPoint;
 import it.tramways.projects.api.v1.model.IntegerProperty;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
 import org.oristool.analyzer.log.AnalysisMonitor;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -16,6 +10,13 @@ import org.oristool.models.stpn.trans.RegTransient;
 import org.oristool.models.stpn.trees.DeterministicEnablingState;
 import org.oristool.petrinet.Marking;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import static it.tramways.analysis.availability.AvailabilityAnalysisProperties.PERIOD;
 
 public class AvailabilityAnalysis {
 
@@ -28,11 +29,11 @@ public class AvailabilityAnalysis {
 
     private static RegTransient createAnalysis(int period) {
         return RegTransient.builder()
-            .greedyPolicy(BigDecimal.valueOf(period), BigDecimal.ZERO)
-            .timeBound(BigDecimal.valueOf(period))
-            .monitor(new MyAnalysisMonitor())
-            .timeStep(BigDecimal.valueOf(1.0 / FPS))
-            .build();
+                .greedyPolicy(BigDecimal.valueOf(period), BigDecimal.ZERO)
+                .timeBound(BigDecimal.valueOf(period))
+                .monitor(new MyAnalysisMonitor())
+                .timeStep(BigDecimal.valueOf(1.0 / FPS))
+                .build();
     }
 
     public XYAnalysisResult run() {
@@ -45,21 +46,21 @@ public class AvailabilityAnalysis {
         int steps = analysisTime * FPS + 1;
 
         double[] time = IntStream.range(0, steps)
-            .asDoubleStream()
-            .map(v -> v / FPS)
-            .toArray();
+                .asDoubleStream()
+                .map(v -> v / FPS)
+                .toArray();
         double[] av = IntStream.range(0, steps)
-            .asDoubleStream()
-            .map(v -> 1.0)
-            .toArray();
+                .asDoubleStream()
+                .map(v -> 1.0)
+                .toArray();
 
         RegTransient analysis = createAnalysis(analysisTime);
         TransientSolution<DeterministicEnablingState, Marking> ssSolution = analysis
-            .compute(mapper.getNet(), mapper.getMarking());
+                .compute(mapper.getNet(), mapper.getMarking());
 
         TransientSolution<DeterministicEnablingState, RewardRate> reward = TransientSolution
-            .computeRewards(false,
-                ssSolution, "1-red");
+                .computeRewards(false,
+                        ssSolution, "1-red");
 
         for (int tick = 0; tick < steps; tick++) {
             av[tick] *= reward.getSolution()[tick % (analysisTime * FPS)][0][0];

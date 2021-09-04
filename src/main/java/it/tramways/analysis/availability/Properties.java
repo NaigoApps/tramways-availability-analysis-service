@@ -1,15 +1,7 @@
 package it.tramways.analysis.availability;
 
-import it.tramways.projects.api.v1.model.ChoiceElement;
-import it.tramways.projects.api.v1.model.ChoiceProperty;
-import it.tramways.projects.api.v1.model.DecimalProperty;
-import it.tramways.projects.api.v1.model.Distribution;
-import it.tramways.projects.api.v1.model.DistributionProperty;
-import it.tramways.projects.api.v1.model.ExponentialDistribution;
-import it.tramways.projects.api.v1.model.IntegerProperty;
-import it.tramways.projects.api.v1.model.Property;
-import it.tramways.projects.api.v1.model.StringProperty;
-import it.tramways.projects.api.v1.model.UniformDistribution;
+import it.tramways.projects.api.v1.model.*;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +36,7 @@ public final class Properties {
     }
 
     public static ChoiceProperty choiceProperty(String name, String value,
-        ChoiceElement... elements) {
+                                                ChoiceElement... elements) {
         ChoiceProperty property = new ChoiceProperty();
         property.setName(name);
         property.setValue(value);
@@ -61,9 +53,13 @@ public final class Properties {
     }
 
     public static DistributionProperty uniformDistributionProperty(String name) {
+        return uniformDistributionProperty(name, BigDecimal.ZERO, BigDecimal.ONE);
+    }
+
+    public static DistributionProperty uniformDistributionProperty(String name, BigDecimal from, BigDecimal to) {
         UniformDistribution distribution = new UniformDistribution();
-        distribution.setLeft(BigDecimal.ZERO);
-        distribution.setRight(BigDecimal.ONE);
+        distribution.setLeft(from);
+        distribution.setRight(to);
         distribution.setDistributionType(UniformDistribution.class.getSimpleName());
 
         DistributionProperty property = new DistributionProperty();
