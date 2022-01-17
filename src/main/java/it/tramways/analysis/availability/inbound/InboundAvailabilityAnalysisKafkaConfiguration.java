@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class AvailabilityAnalysisKafkaConfiguration {
+public class InboundAvailabilityAnalysisKafkaConfiguration {
 
     private final ApplicationConfig applicationConfig;
     private final AvailabilityAnalysisRequestListener requestListener;
 
     @Autowired
-    public AvailabilityAnalysisKafkaConfiguration(
+    public InboundAvailabilityAnalysisKafkaConfiguration(
             ApplicationConfig applicationConfig,
             AvailabilityAnalysisRequestListener requestListener
     ) {
@@ -33,11 +33,6 @@ public class AvailabilityAnalysisKafkaConfiguration {
         this.requestListener = requestListener;
     }
 
-    /**
-     * Sets up kafka topic that will receive availability analysis request
-     *
-     * @return created topic
-     */
     @Bean
     public NewTopic analysisRequestsTopic() {
         return TopicBuilder.name(getAnalysisLaunchTopic()).build();
@@ -47,11 +42,6 @@ public class AvailabilityAnalysisKafkaConfiguration {
         return AnalysisKafkaTopicsUtility.getAnalysisLaunchTopic(applicationConfig.getName());
     }
 
-    /**
-     * Sets up Kafka-Spring listener container
-     *
-     * @return ListenerContainer
-     */
     @Bean
     public KafkaMessageListenerContainer<Integer, AnalysisRequest> messageListenerContainer() {
         ContainerProperties containerProps = new ContainerProperties(getAnalysisLaunchTopic());
