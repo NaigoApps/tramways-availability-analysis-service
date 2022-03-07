@@ -1,10 +1,13 @@
 package it.tramways.analysis.availability;
 
 
+import it.tramways.projects.api.v1.model.*;
 import it.tramways.analysis.availability.builder.PropertyBuilder;
 import it.tramways.analysis.commons.DefaultAnalysisProperties;
 import it.tramways.analysis.roadmap.*;
-import it.tramways.projects.api.v1.model.*;
+import it.tramways.projects.api.v1.model.CrossingLink;
+import it.tramways.projects.api.v1.model.Lane;
+import it.tramways.projects.api.v1.model.RelevantPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 import static it.tramways.analysis.availability.AvailabilityAnalysisProperties.*;
 import static it.tramways.analysis.roadmap.RoadMapUtilities.*;
 
+@Deprecated
 public class AvailabilityAnalysisType {
 
     public AvailabilityAnalysis createAnalysis(NetworkMap networkMap, List<Property> params) {
@@ -28,7 +32,7 @@ public class AvailabilityAnalysisType {
                 networkMap.listLinks().stream().map(ConfigurablePropertySource::new)
                         .collect(Collectors.toList()));
         propertySource.addSource(new DefaultPropertySource(params));
-        return new AvailabilityAnalysis(propertySource);
+        return null;
     }
 
     private List<NetworkPoint> findCrossingPoints(List<NetworkPoint> networkPoints) {

@@ -2,7 +2,7 @@ package it.tramways.analysis.availability;
 
 import it.tramways.analysis.api.v1.model.XYAnalysisResult;
 import it.tramways.analysis.api.v1.model.XYPoint;
-import it.tramways.projects.api.v1.model.IntegerProperty;
+import it.tramways.projects.api.v1.model.RoadMap;
 import org.oristool.analyzer.log.AnalysisMonitor;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static it.tramways.analysis.availability.AvailabilityAnalysisProperties.PERIOD;
-
 public class AvailabilityAnalysis {
 
     private static final int FPS = 1;
-    private final PropertySource source;
+    private final RoadMap map;
+    private final PropertySource propertySource;
 
-    public AvailabilityAnalysis(PropertySource params) {
-        this.source = params;
+    public AvailabilityAnalysis(RoadMap map, PropertySource propertySource) {
+        this.map = map;
+        this.propertySource = propertySource;
     }
 
     private static RegTransient createAnalysis(int period) {
@@ -39,9 +39,12 @@ public class AvailabilityAnalysis {
     public XYAnalysisResult run() {
         CrossingPointPetriNetMapper mapper = new CrossingPointPetriNetMapper();
 
-        int analysisTime = getIntegerParam(PERIOD.name(), 120);
+        Integer analysisTime = mapper.getPeriod();
+        if (analysisTime == null) {
+            analysisTime = 120;
+        }
 
-        mapper.map(source);
+        mapper.map(map, propertySource);
 
         int steps = analysisTime * FPS + 1;
 
@@ -81,14 +84,6 @@ public class AvailabilityAnalysis {
         result.setPoints(points);
 
         return result;
-    }
-
-    private int getIntegerParam(String name, int def) {
-        IntegerProperty property = source.findProperty(name, IntegerProperty.class);
-        if (property != null && property.getValue() != null) {
-            return property.getValue();
-        }
-        return def;
     }
 
     private static class MyAnalysisMonitor implements AnalysisMonitor {

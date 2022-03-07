@@ -1,15 +1,16 @@
 package it.tramways.analysis.roadmap;
 
-import it.tramways.projects.api.v1.model.CrossingLink;
-import it.tramways.projects.api.v1.model.Lane;
-import it.tramways.projects.api.v1.model.RelevantPoint;
-import it.tramways.projects.api.v1.model.RoadMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import it.tramways.projects.api.v1.model.CrossingLink;
+import it.tramways.projects.api.v1.model.Lane;
+import it.tramways.projects.api.v1.model.RelevantPoint;
+import it.tramways.projects.api.v1.model.RoadMap;
 import org.apache.commons.lang3.StringUtils;
 
 public class RoadMapNetworkMapper {
